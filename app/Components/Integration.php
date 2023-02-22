@@ -25,6 +25,6 @@ abstract class Integration
         return array_combine($this->crm_keys, $values);
     }
 
-    abstract public function sendRequest(array $headers, array $body) ;
-    abstract public function sendRequestWithApiKey(array $headers, array $body);
+    abstract public function sendRequest(array $body) ;
+    abstract public function sendRequestWithApiKey(array $body);
 }

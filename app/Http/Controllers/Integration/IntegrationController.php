@@ -29,7 +29,7 @@ class IntegrationController extends Controller
 
             $authorization = $data['authorization'];
 
-            unset($data['name'], $data['lastName'], $data['phone'], $data['email'], $data['integration_id'], $data['authorization']);
+            //unset($data['name'], $data['lastName'], $data['phone'], $data['email'], $data['integration_id'], $data['authorization']);
 
             $integrationClass = IntegrationFactory::make($integrationName);
 
@@ -37,11 +37,11 @@ class IntegrationController extends Controller
 
                 if (!$authorization) {
 
-                    $result = $integrationClass->sendRequest($credentials, $data);
+                    $result = $integrationClass->sendRequest($credentials);
 
                 }else {
 
-                    $result = $integrationClass->sendRequestWithApiKey($credentials, $data);
+                    $result = $integrationClass->sendRequestWithApiKey($credentials);
                 }
 
                 $arr = (array)json_decode($result);
