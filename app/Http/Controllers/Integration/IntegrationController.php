@@ -26,10 +26,6 @@ class IntegrationController extends Controller
 
             UserData::firstOrCreate($credentials);
 
-           // $authorization = $data['authorization'];
-
-            //unset($data['name'], $data['lastName'], $data['phone'], $data['email'], $data['integration_id'], $data['authorization']);
-
             $integrationClass = IntegrationFactory::make($integrationName);
 
             if ($integrationClass !== null) {
