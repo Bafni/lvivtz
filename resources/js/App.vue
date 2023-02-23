@@ -25,6 +25,13 @@
                     {{ nameError }}!</p>
             </div>
             <div class="m-6">
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
+                <input type="password" id="password" v-model="password"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                       placeholder="password" >
+
+            </div>
+            <div class="m-6">
                 <label for="Last Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
                     Name</label>
                 <input type="text" id="Last Name" v-model="lastName"
@@ -79,8 +86,10 @@ export default {
     setup() {
         const {handleSubmit, isSubmitting, submitCount} = useForm()
         const integration = ref('');
+        const password = ref('')
         const answer = ref('')
         const authorization = ref(false)
+
 
         watch(answer, (newValue, oldValue) => {
             if(newValue.status === 'ok') {
@@ -131,21 +140,20 @@ export default {
 
         const onSubmit = handleSubmit((values, event) => {
 
-            console.log(values)
+            values['password'] = password.value
             if(authorization.value === true) {
-                delete values['authorization']
+
+                console.log(values)
                 axios
                     .request({
                         method: 'post',
                         baseURL: '/api/signup',
-                        headers: {
-                            'Authorisation': 'Bearer TOKEN'
-                        },
+                        headers: {'Authorization': 'need '},
                         data: values,
                     })
                     .then(re => {
                         answer.value = re.data
-                        console.log(re.data)
+                        console.log('auth', re.data)
                     })
             }else {
                 axios
@@ -167,6 +175,7 @@ export default {
         })
 
         return {
+            name, password,
             lastNameError,  lastNameBlur,
             phoneError, phoneBlur,
             nameError, nameBlur,
@@ -174,7 +183,7 @@ export default {
 
             integration, integration_id, authorization, answer,
 
-            name, lastName, phone, email, onSubmit
+            lastName, phone, email, onSubmit
         }
     }
 }

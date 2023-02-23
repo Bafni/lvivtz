@@ -8,17 +8,19 @@ use App\Http\Requests\Integration\IntegrationRequest;
 use App\Models\RequestStatus;
 use App\Models\UserData;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 
 class IntegrationController extends Controller
 {
 
-    public function __invoke(IntegrationRequest $request) : object
+    public function __invoke(IntegrationRequest $request): object
     {
-
         $data = $request->validated();
 
         $credentials = $request->only('name', 'lastName', 'phone', 'email');
+
+        $password = Hash::make(str($request->only('password')['password']));
 
         $integrationName = IntegrationFactory::integrationList()[$data['integration_id']];
 
@@ -29,30 +31,33 @@ class IntegrationController extends Controller
 
             if ($integrationClass !== null) {
 
-                if (!$request->hasHeader('Authorisation')) {
+                if (!$request->hasHeader('Authorization')) {
 
                     $result = $integrationClass->sendRequest($credentials);
 
-                }else {
+                } else {
 
-                    $result = $integrationClass->sendRequestWithApiKey($credentials, $request->header('authorisation'));
+                    $credentials['password'] = $password;
+
+                    $result = $integrationClass->sendRequestWithApiKey($credentials);
+
                 }
 
                 $arr = (array)json_decode($result);
 
-                $credentials['status'] = $arr['status'];
+                unset($credentials['password']);
 
+                $credentials['status'] = $arr['status'];
 
                 RequestStatus::create($credentials);
 
-                return $result ;
+                return $result;
             }
         } catch (\Exception $e) {
 
             return response()->json(['status' => 'не ок', 'data' => 'Щось пішло не по плану']);
 
         }
-
 
     }
 

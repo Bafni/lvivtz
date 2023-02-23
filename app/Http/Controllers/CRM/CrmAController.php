@@ -13,13 +13,21 @@ class CrmAController extends Controller
     {
         $data = $request->all();
 
+        if($request->headers->has('nameCRM') &&  $request->headers->has('passwordCrm')) {
+
+            //Ніби наша умовна CRM провірила і відповіла
+
+            return response()->json([ 'status' => 'login-ok',], 201)->withHeaders([
+                'api_key' => 'mokeJwt'
+            ]);
+        }
 
         if ($request->headers->has('Authorization')) {
 
-            return response()->json([ 'status' => 'ok', 'data' => $data], 201);
+            return response()->json([ 'status' => 'ok', 'auth' => true, 'data' => $data], 201);
         }
 
-        return response()->json(['status' => 'ok', 'data' => $data], 200);
+        return response()->json(['status' => 'ok', 'auth' => false, 'data' => $data], 200);
     }
 
 }

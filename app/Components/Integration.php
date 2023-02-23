@@ -18,13 +18,13 @@ abstract class Integration
             'timeout'  => 2.0,
         ]);
     }
-    final public function crmData($data) : array {
+    final public function crmData($values, $keys) : array {
 
-        $values = array_values($data);
+        $values = array_values($values);
 
-        return array_combine($this->crm_keys, $values);
+        return array_combine($keys, $values);
     }
 
     abstract public function sendRequest(array $body) ;
-    abstract public function sendRequestWithApiKey(array $body, string $token);
+    abstract public function sendRequestWithApiKey(array $body);
 }

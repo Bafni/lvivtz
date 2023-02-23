@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 class IntegrationA extends Integration
 {
-    protected array $crm_keys = ['name_1', 'lastName_1', 'phone_1', 'email_1'];
+    protected array $crm_keys = ['nameCrm', 'lastNameCrm', 'phoneCrm', 'emailCrm'];
     protected string $crm_uri = 'crm-a';
     protected string $mokJwt = '';
 
@@ -18,23 +18,34 @@ class IntegrationA extends Integration
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
 
         $response = $this->client->request('POST', $url, [
-            'form_params' => $this->crmData($body),
+            'form_params' => $this->crmData($body, $this->crm_keys), // CRM key:value
         ]);
 
         return $response->getBody();
     }
 
-    public function sendRequestWithApiKey(array $body, $token): object
+    public function sendRequestWithApiKey(array $body): object
     {
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
         //так тут дубль кода для теста ))
+        $password = $body['password'];
+        unset($body['password']);
 
         $response = $this->client->request('POST', $url, [
-            'form_params' => $this->crmData($body), // CRM key:value
+
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,
+                'nameCrm' => $body['name'],
+                'passwordCrm' => $password,
             ],
         ]);
+
+        if($response->hasHeader('api_key')) {
+            $response = $this->client->request('POST', $url, [
+                'form_params' => $this->crmData($body, $this->crm_keys),
+                'headers' => [
+                     'Authorization' => 'Bearer ' .$response->getHeader('api_key')[0],
+                ]]);
+        }
 
         return $response->getBody();
     }
