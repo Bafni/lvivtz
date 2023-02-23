@@ -80,6 +80,7 @@ export default {
         const {handleSubmit, isSubmitting, submitCount} = useForm()
         const integration = ref('');
         const answer = ref('')
+        const authorization = ref(false)
 
         watch(answer, (newValue, oldValue) => {
             if(newValue.status === 'ok') {
@@ -122,23 +123,46 @@ export default {
                 .email('Введіть вірний email')
         )
 
-        const {value: authorization} = useField('authorization')
-        authorization.value = false
+       // const {value: authorization} = useField('authorization')
+       //authorization.value = false
         const {value: integration_id} = useField('integration_id')
         integration_id.value = 0
 
 
         const onSubmit = handleSubmit((values, event) => {
-             axios.post('/api/signup', values)
-            .then(re => {
-                answer.value = re.data
-                console.log(re.data)
-            })
-            .catch(e => {
-                answer.value = e.data
-            })
 
-            //console.log('success-validate-form-value', values)
+            console.log(values)
+            if(authorization.value === true) {
+                delete values['authorization']
+                axios
+                    .request({
+                        method: 'post',
+                        baseURL: '/api/signup',
+                        headers: {
+                            'Authorisation': 'Bearer TOKEN'
+                        },
+                        data: values,
+                    })
+                    .then(re => {
+                        answer.value = re.data
+                        console.log(re.data)
+                    })
+            }else {
+                axios
+                    .request({
+                        method: 'post',
+                        baseURL: '/api/signup',
+                        data: values,
+                    })
+                    .then(re => {
+                        answer.value = re.data
+                        console.log(re.data)
+                    })
+
+            }
+
+
+            console.log('success-validate-form-value', values)
 
         })
 

@@ -27,7 +27,7 @@ class IntegrationController extends Controller
 
             UserData::firstOrCreate($credentials);
 
-            $authorization = $data['authorization'];
+           // $authorization = $data['authorization'];
 
             //unset($data['name'], $data['lastName'], $data['phone'], $data['email'], $data['integration_id'], $data['authorization']);
 
@@ -35,13 +35,13 @@ class IntegrationController extends Controller
 
             if ($integrationClass !== null) {
 
-                if (!$authorization) {
+                if (!$request->hasHeader('Authorisation')) {
 
                     $result = $integrationClass->sendRequest($credentials);
 
                 }else {
 
-                    $result = $integrationClass->sendRequestWithApiKey($credentials);
+                    $result = $integrationClass->sendRequestWithApiKey($credentials, $request->header('authorisation'));
                 }
 
                 $arr = (array)json_decode($result);

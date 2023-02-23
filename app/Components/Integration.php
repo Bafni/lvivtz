@@ -26,5 +26,5 @@ abstract class Integration
     }
 
     abstract public function sendRequest(array $body) ;
-    abstract public function sendRequestWithApiKey(array $body);
+    abstract public function sendRequestWithApiKey(array $body, string $token);
 }

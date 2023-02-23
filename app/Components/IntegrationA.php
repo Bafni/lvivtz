@@ -24,7 +24,7 @@ class IntegrationA extends Integration
         return $response->getBody();
     }
 
-    public function sendRequestWithApiKey( array $body)
+    public function sendRequestWithApiKey( array $body , $token)
     {
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
         //так тут дубль кода для теста ))
@@ -34,24 +34,11 @@ class IntegrationA extends Integration
         $response = $this->client->request('POST', $url, [
             'form_data' => $this->crmData($body), // Отримуємо токен на основі credentials
             'headers' => [
-                'auth-me' => true
+                'Authorization' => 'Bearer ' . $token,
+
             ],
         ]);
 
-        if ($response->getStatusCode() === 200 || $response->hasHeader('jwt_token')) {
-
-            $this->mokJwt = $response->getHeaderLine('jwt_token');
-
-            // Ніби у нас є токен і з токеном звертаємось до CRM
-
-            $response = $this->client->request('POST', $url, [
-                'form_data' => $this->crmData($body), // ну і нібито відправляємо данні після авторизації
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->mokJwt,
-                ]
-            ]);
-        }
-        //Тут можна вернути обєкт классу Response і у методах також
         return $response->getBody();
     }
 
