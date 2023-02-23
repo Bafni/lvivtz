@@ -38,13 +38,12 @@ class IntegrationController extends Controller
                     $result = $integrationClass->sendRequestWithApiKey($credentials, $request->header('authorisation'));
                 }
 
-/*                $arr = (array)json_decode($result);
+                $arr = (array)json_decode($result);
 
                 $credentials['status'] = $arr['status'];
 
-                $credentials['data'] = $arr['data'];
 
-                RequestStatus::create($credentials);*/
+                RequestStatus::create($credentials);
 
                 return $result ;
             }

@@ -24,7 +24,7 @@ class IntegrationA extends Integration
         return $response->getBody();
     }
 
-    public function sendRequestWithApiKey(array $body, $token)
+    public function sendRequestWithApiKey(array $body, $token): object
     {
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
         //так тут дубль кода для теста ))
