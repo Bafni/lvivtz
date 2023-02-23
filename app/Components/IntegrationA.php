@@ -13,7 +13,7 @@ class IntegrationA extends Integration
     protected string $crm_uri = 'crm-a';
     protected string $mokJwt = '';
 
-    public function sendRequest(array $body)
+    public function sendRequest(array $body): object
     {
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
 
@@ -24,7 +24,7 @@ class IntegrationA extends Integration
         return $response->getBody();
     }
 
-    public function sendRequestWithApiKey( array $body , $token)
+    public function sendRequestWithApiKey(array $body, $token): object
     {
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
         //так тут дубль кода для теста ))
@@ -33,7 +33,6 @@ class IntegrationA extends Integration
             'form_data' => $this->crmData($body), // CRM key:value
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
-
             ],
         ]);
 

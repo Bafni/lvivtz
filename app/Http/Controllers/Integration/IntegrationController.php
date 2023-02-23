@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class IntegrationController extends Controller
 {
 
-    public function __invoke(IntegrationRequest $request)
+    public function __invoke(IntegrationRequest $request) : object
     {
 
         $data = $request->validated();
@@ -23,7 +23,6 @@ class IntegrationController extends Controller
         $integrationName = IntegrationFactory::integrationList()[$data['integration_id']];
 
         try {
-
             UserData::firstOrCreate($credentials);
 
             $integrationClass = IntegrationFactory::make($integrationName);
@@ -48,7 +47,6 @@ class IntegrationController extends Controller
                 RequestStatus::create($credentials);
 
                 return $result ;
-
             }
         } catch (\Exception $e) {
             DB::rollBack();

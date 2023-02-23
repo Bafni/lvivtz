@@ -17,7 +17,7 @@ class CrmAController extends Controller
             return response()->json([ 'status' => 'ok', 'data' => 'CRM save with authorization'], 201);
         }
 
-        return response()->json(['status' => 'ok', 'data' => 'CRM save without authorization'], 201);
+        return response()->json(['status' => 'ok', 'data' => 'CRM save without authorization'], 200);
     }
 
 }
