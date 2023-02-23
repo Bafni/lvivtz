@@ -23,7 +23,6 @@ class IntegrationController extends Controller
         $integrationName = IntegrationFactory::integrationList()[$data['integration_id']];
 
         try {
-            DB::beginTransaction();
 
             UserData::firstOrCreate($credentials);
 
@@ -55,7 +54,6 @@ class IntegrationController extends Controller
                 return $result ;
 
             }
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
 

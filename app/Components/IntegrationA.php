@@ -30,7 +30,7 @@ class IntegrationA extends Integration
         //так тут дубль кода для теста ))
 
         $response = $this->client->request('POST', $url, [
-            'form_data' => $this->crmData($body), // Отримуємо токен на основі credentials
+            'form_data' => $this->crmData($body), // CRM key:value
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
 
