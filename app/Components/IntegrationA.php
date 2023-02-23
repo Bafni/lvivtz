@@ -29,8 +29,6 @@ class IntegrationA extends Integration
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
         //так тут дубль кода для теста ))
 
-        //Спроба емітації запиту авторизації для отриманная токена
-
         $response = $this->client->request('POST', $url, [
             'form_data' => $this->crmData($body), // Отримуємо токен на основі credentials
             'headers' => [
