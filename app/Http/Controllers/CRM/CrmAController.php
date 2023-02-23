@@ -11,13 +11,15 @@ class CrmAController extends Controller
 
     public function __invoke(Request $request)
     {
+        $data = $request->all();
+
 
         if ($request->headers->has('Authorization')) {
 
-            return response()->json([ 'status' => 'ok', 'data' => 'CRM save with authorization'], 201);
+            return response()->json([ 'status' => 'ok', 'data' => $data], 201);
         }
 
-        return response()->json(['status' => 'ok', 'data' => 'CRM save without authorization'], 200);
+        return response()->json(['status' => 'ok', 'data' => $data], 200);
     }
 
 }

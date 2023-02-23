@@ -24,13 +24,13 @@ class IntegrationA extends Integration
         return $response->getBody();
     }
 
-    public function sendRequestWithApiKey(array $body, $token): object
+    public function sendRequestWithApiKey(array $body, $token)
     {
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
         //так тут дубль кода для теста ))
 
         $response = $this->client->request('POST', $url, [
-            'form_data' => $this->crmData($body), // CRM key:value
+            'form_params' => $this->crmData($body), // CRM key:value
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
             ],
