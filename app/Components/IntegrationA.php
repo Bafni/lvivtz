@@ -18,7 +18,7 @@ class IntegrationA extends Integration
         $url = $_SERVER['SERVER_ADDR'] . '/api/' . $this->crm_uri;
 
         $response = $this->client->request('POST', $url, [
-            'form_params' => $body,
+            'form_params' => $this->crmData($body),
         ]);
 
         return $response->getBody();
