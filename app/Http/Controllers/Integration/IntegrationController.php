@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Integration\IntegrationRequest;
 use App\Models\RequestStatus;
 use App\Models\UserData;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 

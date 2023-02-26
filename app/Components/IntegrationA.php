@@ -30,7 +30,6 @@ class IntegrationA extends Integration
         //так тут дубль кода для теста ))
         $password = $body['password'];
         unset($body['password']);
-
         $response = $this->client->request('POST', $url, [
 
             'headers' => [
@@ -38,7 +37,6 @@ class IntegrationA extends Integration
                 'passwordCrm' => $password,
             ],
         ]);
-
         if($response->hasHeader('api_key')) {
             $response = $this->client->request('POST', $url, [
                 'form_params' => $this->crmData($body, $this->crm_keys),
